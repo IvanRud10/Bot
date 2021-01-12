@@ -1,11 +1,9 @@
-import datetime
 import socket
 import scrapy
 
 from scrapy.loader.processors import MapCompose, Join
 from scrapy.linkextractors import LinkExtractor
 from scrapy.loader import ItemLoader
-from scrapy.spiders import CrawlSpider, Rule
 from scrapy.http import Request
 from re import findall
 
