@@ -1,19 +1,17 @@
-import datetime
 import socket
 import scrapy
 
 from scrapy.loader.processors import MapCompose, Join
 from scrapy.linkextractors import LinkExtractor
 from scrapy.loader import ItemLoader
-from scrapy.spiders import CrawlSpider, Rule
 from scrapy.http import Request
 from re import findall
 
 from properties.items import PropertiesItem
 
 
-class TestSpider(scrapy.Spider):
-    name = "test"
+class LamodaSpider(scrapy.Spider):
+    name = "lamoda_clothes"
     allowed_domains = ["www.lamoda.ua"]
 
     # Start on the first index page
@@ -30,8 +28,10 @@ class TestSpider(scrapy.Spider):
         yield Request(response.urljoin(next_page_url),callback=self.parse1)
         """
         number_of_elements = response.xpath('//a[@class="cat-nav-cnt"][2]/text()').extract()
-        number_of_elements = int(number_of_elements)/60
-        for page_number in range(number_of_elements):
+        number_of_elements = str(number_of_elements)
+        #number_of_elements = numb(number_of_elements)
+        #number_of_elements = number_of_elements/60
+        for page_number in range(150):
             current_page_url = findall(r'(.*)&page=', response.url)[0]
             next_page_url = f"{current_page_url}&page={page_number}"
             yield Request(response.urljoin(next_page_url),callback=self.parse1)
