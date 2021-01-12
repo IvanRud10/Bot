@@ -10,28 +10,19 @@ from re import findall
 from properties.items import PropertiesItem
 
 
-class LamodaSpider(scrapy.Spider):
-    name = "lamoda_clothes"
+class TestSpider(scrapy.Spider):
+    name = "test"
     allowed_domains = ["www.lamoda.ua"]
 
-    # Start on the first index page
     start_urls = (
         'https://www.lamoda.ua/c/477/clothes-muzhskaya-odezhda/?sitelink=topmenuM&l=2&page=1',
     )
     def parse(self, response):
-        """
-        current_page_number = int(findall(r'&page=(.*)', response.url)[0])
-        current_page_url = findall(r'(.*)&page=', response.url)[0]
-        yield Request(response.urljoin(current_page_url),callback=self.parse1)
-        next_page_number = current_page_number + 1
-        next_page_url = f"{current_page_url}&page={next_page_number}"
-        yield Request(response.urljoin(next_page_url),callback=self.parse1)
-        """
-        number_of_elements = response.xpath('//a[@class="cat-nav-cnt"][2]/text()').extract()
+        number_of_elements = response.xpath('(//span[@class="cat-nav-cnt"])[2]/text()').get()
         number_of_elements = str(number_of_elements)
-        #number_of_elements = numb(number_of_elements)
-        #number_of_elements = number_of_elements/60
-        for page_number in range(150):
+        number_of_elements = int(number_of_elements)
+        number_of_elements = number_of_elements//60
+        for page_number in range(number_of_elements):
             current_page_url = findall(r'(.*)&page=', response.url)[0]
             next_page_url = f"{current_page_url}&page={page_number}"
             yield Request(response.urljoin(next_page_url),callback=self.parse1)
