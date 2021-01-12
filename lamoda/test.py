@@ -29,9 +29,9 @@ class TestSpider(scrapy.Spider):
         next_page_url = f"{current_page_url}&page={next_page_number}"
         yield Request(response.urljoin(next_page_url),callback=self.parse1)
         """
-        for x in range(168):
+        for page_number in range(168):
             current_page_url = findall(r'(.*)&page=', response.url)[0]
-            next_page_url = f"{current_page_url}&page={x}"
+            next_page_url = f"{current_page_url}&page={page_number}"
             yield Request(response.urljoin(next_page_url),callback=self.parse1)
     def parse1(self, response):
         item_selector = response.xpath('//a[@class="products-list-item__link link"]/@href')
@@ -42,8 +42,8 @@ class TestSpider(scrapy.Spider):
         #yield Request(response.urljoin(item_selector2),callback=self.parse_items)
 
     def parse_items(self, response):
-        #price = response.xpath('//span[@class="_1xktn17sNuFwy45DZmZ5Oe product-prices__price_current"]/span[@style="white-space: nowrap;"]/text()').get()
-        price1 = response.xpath('//span[contains(@class,"CQSDz7BBEVO3V9K8bKMYg")]/span/text()',re='[\s,.0-9]+').extract()
+        #price1 = response.xpath('//span[contains(@class,"product-prices__price_current")]/preceding-sibling::span//text()').extract()
+        price1 = response.xpath('//div[contains(@class,"product-prices")]/descendant::span[contains(@class,"CQSDz7BBEVO3V9K8bKMYg")]/text()').extract()
         if not price1:
             price1='missing'
         l = ItemLoader(item=PropertiesItem(), response=response)
@@ -51,10 +51,10 @@ class TestSpider(scrapy.Spider):
         l.add_xpath('title', '//*[@class="product-title__brand-name"]/@title'), MapCompose(str.strip, str.title)   
         l.add_xpath('article', '//div[@class="ii-product__attribute"]/span[@class="ii-product__attribute-value"]/text()',MapCompose(str.strip),re='[A-Za-z0-9]{12}')  
         #l.add_xpath('price1', '//*[contains(@class,"CQSDz7BBEVO3V9K8bKMYg")]/text()',MapCompose(lambda i: i.replace(',', ''),str.strip),re='[\s,.0-9]+')
-        l.add_xpath('price_current', '//*[contains(@class,"product-prices__price_current")]/text()',MapCompose(lambda i: i.replace(',', ''),str.strip),re='[\s,.0-9]+')
-        #l.add_xpath('price_current', '//*[contains(text(),"₴")]/text()',MapCompose(lambda i: i.replace(',', ''),str.strip),re='[\s,.0-9]+')
-        #l.add_xpath('price', '//*[@class="_1xktn17sNuFwy45DZmZ5Oe product-prices__price_current"]/span[@style="white-space: nowrap;"]/text()',MapCompose(lambda i: i.replace(',', ''), float),re='[,.0-9]+')
-        l.add_xpath('image_url', '//img[@class="swiper-lazy x-gallery__image x-image__zoom-in swiper-lazy-loaded"][1]/@src')
+        l.add_xpath('price_current', '//*[contains(@class,"product-prices__price_current")]/text()',MapCompose(lambda i: i.replace(' ', ''),str.strip),re='[\s,.0-9]+')
+        l.add_xpath('price', '//*[contains(@class,"CQSDz7BBEVO3V9K8bKMYg")]/text()',MapCompose(lambda i: i.replace(',', ''), float),re='[,.0-9]+')
         l.add_value('price1',price1)
+        l.add_xpath('image_url', '//div[contains(@class,"x-gallery__image-wrapper")][1]//@src', MapCompose(lambda i: response.urljoin(i)))
         yield l.load_item()
 
+1
