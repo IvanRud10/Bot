@@ -57,4 +57,3 @@ class TestSpider(scrapy.Spider):
         l.add_xpath('image_url', '//div[contains(@class,"x-gallery__image-wrapper")][1]//@src', MapCompose(lambda i: response.urljoin(i)))
         yield l.load_item()
 
-1
