@@ -1,7 +1,7 @@
 from scrapy.item import Item, Field
 
 
-class PropertiesItem(Item):
+class LamodaItem(Item):
     title = Field()
     category = Field()
     article = Field()
