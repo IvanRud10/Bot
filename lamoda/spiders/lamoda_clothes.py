@@ -22,8 +22,6 @@ class LamodaSpider(scrapy.Spider):
         number_of_elements = response.xpath('(//span[@class="cat-nav-cnt"])[2]/text()').get()
         number_of_elements = int(str(number_of_elements))//120
         for page_number in range(number_of_elements):
-            print('----------------------------------------------------')
-            print(page_number)
             current_page_url = findall(r'(.*)&page=', response.url)[0]
             next_page_url = f"{current_page_url}&page={page_number}"
             yield Request(response.urljoin(next_page_url),callback=self.parse1)
