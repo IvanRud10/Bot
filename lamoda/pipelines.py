@@ -1,5 +1,5 @@
 import re
-class PropertiesPipeline(object):
+class LamodaPipeline(object):
     def process_item(self, item, spider):
         #item["category"] = item["category"][-1].strip().title()
         #item["title"] = item["title"][-1].strip().title()
