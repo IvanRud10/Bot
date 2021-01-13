@@ -6,10 +6,10 @@
 #     http://doc.scrapy.org/en/latest/topics/settings.html
 #
 
-BOT_NAME = 'properties'
+BOT_NAME = 'lamoda'
 
-SPIDER_MODULES = ['properties.spiders']
-NEWSPIDER_MODULE = 'properties.spiders'
+SPIDER_MODULES = ['lamoda.spiders']
+NEWSPIDER_MODULE = 'lamoda.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on
 # the user-agent
