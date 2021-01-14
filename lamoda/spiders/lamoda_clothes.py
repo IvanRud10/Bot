@@ -21,11 +21,10 @@ class LamodaSpider(scrapy.Spider):
     def parse(self, response):
         number_of_elements = response.xpath('(//span[@class="cat-nav-cnt"])[2]/text()').get()
         number_of_elements = int(str(number_of_elements))//120
-        for page_number in range(number_of_elements):
-            current_page_url = findall(r'(.*)&page=', response.url)[0]
+        current_page_url = findall(r'(.*)&page=', response.url)[0]
+        for page_number in range(1,number_of_elements):
             next_page_url = f"{current_page_url}&page={page_number}"
-            yield Request(response.urljoin(next_page_url),callback=self.parse1)
-    def parse1(self, response):
+            yield Request(response.urljoin(next_page_url))
         item_selector = response.xpath('//a[@class="products-list-item__link link"]/@href')
         for url in item_selector.extract():
             yield Request(response.urljoin(url),callback=self.parse_items)
