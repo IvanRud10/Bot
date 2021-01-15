@@ -20,5 +20,5 @@ AWS_ACCESS_KEY_ID = ""
 AWS_SECRET_ACCESS_KEY = ""
 
 ITEM_PIPELINES = {
-    'lamoda.pipelines.PropertiesPipeline': 100,
+    'lamoda.pipelines.LamodaPipeline': 100,
 }
