@@ -6,7 +6,7 @@
 #     http://doc.scrapy.org/en/latest/topics/settings.html
 #
 
-BOT_NAME = 'lamoda'
+BOT_NAME = 'properties'
 
 SPIDER_MODULES = ['properties.spiders']
 NEWSPIDER_MODULE = 'properties.spiders'
