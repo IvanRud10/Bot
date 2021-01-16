@@ -11,8 +11,8 @@ from re import findall
 from properties.items import PropertiesItem
 
 
-class LamodaSpider(scrapy.Spider):
-    name = "lamoda_clothes"
+class TestSpider(scrapy.Spider):
+    name = "lamoda"
     allowed_domains = ["www.lamoda.ua"]
 
     start_urls = (
@@ -30,7 +30,7 @@ class LamodaSpider(scrapy.Spider):
             next_page_number = current_page_number + 1
             next_page_url = f"{current_page_url}&page={next_page_number}"
             yield Request(next_page_url, callback=self.parse)
-            
+
     def parse_items(self, response):
         first_price = response.xpath('//*[contains(@class,"product-prices__price_current")]/text()').extract()
         first_price = re.sub(r'[^0-9]',"", str(first_price).strip().replace(' ', ''))
