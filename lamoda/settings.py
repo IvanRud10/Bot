@@ -8,8 +8,8 @@
 
 BOT_NAME = 'lamoda'
 
-SPIDER_MODULES = ['lamoda.spiders']
-NEWSPIDER_MODULE = 'lamoda.spiders'
+SPIDER_MODULES = ['properties.spiders']
+NEWSPIDER_MODULE = 'properties.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on
 # the user-agent
@@ -19,6 +19,7 @@ NEWSPIDER_MODULE = 'lamoda.spiders'
 AWS_ACCESS_KEY_ID = ""
 AWS_SECRET_ACCESS_KEY = ""
 
+
 ITEM_PIPELINES = {
-    'lamoda.pipelines.LamodaPipeline': 100,
+    'properties.pipelines.PropertiesPipeline': 100,
 }
