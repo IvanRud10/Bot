@@ -39,7 +39,7 @@ class LamodaSpider(scrapy.Spider):
         if price_current == first_price:
             first_price='missing'
         l = ItemLoader(item=PropertiesItem(), response=response)
-        l.add_xpath('category', '(//span[@class="js-breadcrumbs__item-text"]//text())[last()]'), MapCompose(str.strip, str.title)
+        l.add_xpath('category', '(//a[@class="breadcrumbs__item-link link"]/@title)[last()]'), MapCompose(str.strip, str.title)
         l.add_xpath('title', '//*[@class="product-title__brand-name"]/@title'), MapCompose(str.strip, str.title)   
         l.add_xpath('article', '//div[@class="ii-product__attribute"]/span[@class="ii-product__attribute-value"]/text()',MapCompose(str.strip),re='[A-Za-z0-9]{12}')  
         l.add_xpath('price_current', '//*[contains(@class,"product-prices__price_current")]/@content',MapCompose(lambda i: i.replace(' ', ''),str.strip),re='[\s,.0-9]+')
