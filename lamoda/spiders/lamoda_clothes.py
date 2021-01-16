@@ -16,7 +16,8 @@ class LamodaSpider(scrapy.Spider):
     allowed_domains = ["www.lamoda.ua"]
 
     start_urls = (
-        'https://www.lamoda.ua/c/477/clothes-muzhskaya-odezhda/?sitelink=topmenuM&l=2&page=1',
+        'https://www.lamoda.ua/c/477/clothes-muzhskaya-odezhda/?sitelink=topmenuM&l=2',
+        'https://www.lamoda.ua/c/17/shoes-men/?sitelink=topmenuM&l=3',   
     )
     def parse(self, response):
         item_selector = response.xpath('//a[@class="products-list-item__link link"]/@href')
@@ -38,7 +39,7 @@ class LamodaSpider(scrapy.Spider):
         if price_current == first_price:
             first_price='missing'
         l = ItemLoader(item=PropertiesItem(), response=response)
-        l.add_xpath('category', '//span[@class="product-title__model-name"]/text()'), MapCompose(str.strip, str.title)
+        l.add_xpath('category', '(//span[@class="js-breadcrumbs__item-text"]//text())[last()]'), MapCompose(str.strip, str.title)
         l.add_xpath('title', '//*[@class="product-title__brand-name"]/@title'), MapCompose(str.strip, str.title)   
         l.add_xpath('article', '//div[@class="ii-product__attribute"]/span[@class="ii-product__attribute-value"]/text()',MapCompose(str.strip),re='[A-Za-z0-9]{12}')  
         l.add_xpath('price_current', '//*[contains(@class,"product-prices__price_current")]/@content',MapCompose(lambda i: i.replace(' ', ''),str.strip),re='[\s,.0-9]+')
